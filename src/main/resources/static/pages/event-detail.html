@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="es" class="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Detalle del evento — CulturaTech Bogotá</title>
+  <link rel="shortcut icon" type="image/x-icon" href="/assets/images/logo_CulturaTechBG.ico" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Hanken+Grotesk:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/css/estilos.css">
+</head>
+<!-- Contenido principal con la información detallada del evento seleccionado. -->
+<body data-page="event-detail" class="bg-cremlg txt-main antialiased">
+    
+  <div id="page-content">
+    </div>
+  
+      <!-- Footer Section -->
+    <div id="footer-root">
+      <footer class="w-full bg-darkbl txt-cremlg mt-auto relative overflow-hidden pb-20 md:pb-0">
+        <div class="absolute top-0 right-1/4 w-96 h-96 bg-accent-10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="block md:hidden bg-darkblp border-t border-white/10 px-6 py-8 relative z-10">
+          <div class="flex flex-col items-center gap-4 text-center">
+            <div class="flex items-center gap-2.5 select-none  " >
+              <div class="w-12 h-12 rounded-xl p-1 overflow-hidden flex-shrink-0 flex items-center justify-center transition-all bg-lightbl border border-white/15 shadow-sm">
+                <img src="/assets/images/logo_CulturaTechBG.png" alt="CulturaTech Bogotá Logo" class="w-full h-full object-contain rounded-md" referrerpolicy="no-referrer" />
+              </div>
+              <span class="font-display font-bold tracking-tight text-white text-xl md:text-2xl">CulturaTech Bogotá</span>
+            </div>
+            <div class="flex items-center justify-center gap-4 font-label text-xs txt-darkgr mt-1">
+              <a href="#terminos" data-hook="footer-noop-link" class="hover:text-white transition-colors">Términos</a>
+              <span class="opacity-30">•</span>
+              <a href="#privacidad" data-hook="footer-noop-link" class="hover:text-white transition-colors">Privacidad</a>
+              <span class="opacity-30">•</span>
+              <a href="#contacto" data-hook="footer-noop-link" class="hover:text-white transition-colors">Soporte</a>
+            </div>
+            <p class="font-label text-xs txt-darkgr-80 mt-1">© 2026 CulturaTech Bogotá. Todos los derechos reservados.</p>
+          </div>
+        </div>
+        <div class="hidden md:block py-10 px-6 lg:px-10 border-t border-darkgr-20 relative z-10 max-w-[1280px] mx-auto">
+          <div class="flex flex-col md:flex-row items-center justify-between gap-4 lg:gap-6">
+            <div class="flex flex-col items-center md:items-start gap-2 text-center md:text-left">
+              <div class="flex items-center gap-2.5 select-none  " >
+                <div class="w-11 h-11 rounded-lg p-0.5 overflow-hidden flex-shrink-0 flex items-center justify-center transition-all bg-lightbl border border-white/15 shadow-sm">
+                  <img src="/assets/images/logo_CulturaTechBG.png" alt="CulturaTech Bogotá Logo" class="w-full h-full object-contain rounded-md" referrerpolicy="no-referrer" />
+                </div>
+                <span class="font-display font-bold tracking-tight text-white text-base md:text-lg">CulturaTech Bogotá</span>
+              </div>
+              <p class="font-label text-xs txt-darkgr max-w-xs lg:max-w-md mt-1">Conectando el arte, el patrimonio y la agenda cultural de la capital.</p>
+            </div>
+            <div class="hidden md:grid lg:hidden grid-cols-3 gap-2 bg-default p-2.5 rounded-2xl border border-white/10 shadow-lg w-full max-w-[420px]">
+              <a href="/pages/home.html" data-hook="footer-tablet-nav" data-id="home" title="Inicio" class="relative flex flex-col items-center justify-center p-2 rounded-xl transition-all cursor-pointer select-none font-label min-w-0 no-underline bg-body text-white font-bold shadow-sm">
+                <span class="material-symbols-outlined text-[18px]">home</span>
+                <span class="text-[10px] tracking-tight leading-tight mt-0.5 text-center truncate max-w-full">Inicio</span>
+              </a>
+              <a href="/pages/events.html" data-hook="footer-tablet-nav" data-id="events" title="Explorar" class="relative flex flex-col items-center justify-center p-2 rounded-xl transition-all cursor-pointer select-none font-label min-w-0 no-underline txt-darkgr hover:text-white hover:bg-white/10">
+                <span class="material-symbols-outlined text-[18px]">explore</span>
+                <span class="text-[10px] tracking-tight leading-tight mt-0.5 text-center truncate max-w-full">Explorar</span>
+              </a>
+              <a href="/pages/agenda.html" data-hook="footer-tablet-nav" data-id="agenda" title="Agenda" class="relative flex flex-col items-center justify-center p-2 rounded-xl transition-all cursor-pointer select-none font-label min-w-0 no-underline txt-darkgr hover:text-white hover:bg-white/10"> 
+                <span class="absolute top-1 right-2 px-1.5 py-0.2 bg-warning text-white text-[9px] font-bold rounded-full leading-none z-10">3</span>
+                <span class="material-symbols-outlined text-[18px]">calendar_today</span>
+                <span class="text-[10px] tracking-tight leading-tight mt-0.5 text-center truncate max-w-full">Agenda</span>
+              </a>
+              <a href="/pages/favorites.html" data-hook="footer-tablet-nav" data-id="favorites" title="Favoritos" class="relative flex flex-col items-center justify-center p-2 rounded-xl transition-all cursor-pointer select-none font-label min-w-0 no-underline txt-darkgr hover:text-white hover:bg-white/10">
+                <span class="absolute top-1 right-2 px-1.5 py-0.2 bg-warning text-white text-[9px] font-bold rounded-full leading-none z-10">3</span>
+                <span class="material-symbols-outlined text-[18px]">favorite</span>
+                <span class="text-[10px] tracking-tight leading-tight mt-0.5 text-center truncate max-w-full">Favoritos</span>
+              </a>
+              <a data-hook="footer-tablet-nav" data-id="scrollTop" title="Volver arriba" class="relative flex flex-col items-center justify-center p-2 rounded-xl transition-all cursor-pointer select-none font-label min-w-0 no-underline txt-darkgr hover:text-white hover:bg-white/10"> 
+                <span class="material-symbols-outlined text-[18px]">arrow_upward</span>
+              </a>
+              <a href="/pages/notifications.html" data-hook="footer-tablet-nav" data-id="notifications" title="Avisos" class="relative flex flex-col items-center justify-center p-2 rounded-xl transition-all cursor-pointer select-none font-label min-w-0 no-underline txt-darkgr hover:text-white hover:bg-white/10">
+                <span class="absolute top-1 right-2 px-1.5 py-0.2 bg-warning text-white text-[9px] font-bold rounded-full leading-none z-10">2</span>
+                <span class="material-symbols-outlined text-[18px]">notifications</span>
+                <span class="text-[10px] tracking-tight leading-tight mt-0.5 text-center truncate max-w-full">Avisos</span>
+              </a>
+            </div>
+            <div class="hidden lg:flex lg:items-center lg:gap-2 bg-default p-2 rounded-2xl border border-white/10 shadow-lg">
+              <a href="/pages/home.html" data-hook="footer-desktop-nav" data-id="home" title="Inicio" class="relative flex items-center justify-start gap-2 px-3 py-2 rounded-xl transition-all cursor-pointer select-none text-xs font-label no-underline bg-body text-white font-bold shadow-sm">
+                <span class="material-symbols-outlined text-[20px]">home</span>
+                <span class="inline">Inicio</span>
+              </a>
+              <a href="/pages/events.html" data-hook="footer-desktop-nav" data-id="events" title="Explorar" class="relative flex items-center justify-start gap-2 px-3 py-2 rounded-xl transition-all cursor-pointer select-none text-xs font-label no-underline txt-darkgr hover:text-white hover:bg-white/10">
+                <span class="material-symbols-outlined text-[20px]">explore</span>
+                <span class="inline">Explorar</span>
+              </a>   
+              <a href="/pages/agenda.html" data-hook="footer-desktop-nav" data-id="agenda" title="Mi Agenda"
+                class="relative flex items-center justify-start gap-2 px-3 py-2 rounded-xl transition-all cursor-pointer select-none text-xs font-label no-underline txt-darkgr hover:text-white hover:bg-white/10">
+                <span class="material-symbols-outlined text-[20px]">calendar_today</span>
+                <span class="inline">Mi Agenda</span>
+                <span class="ml-0.5 px-1.5 py-0.2 bg-warning text-white text-[10px] font-bold rounded-full">3</span>
+              </a>
+              <a href="/pages/favorites.html" data-hook="footer-desktop-nav" data-id="favorites" title="Favoritos"
+                class="relative flex items-center justify-start gap-2 px-3 py-2 rounded-xl transition-all cursor-pointer select-none text-xs font-label no-underline txt-darkgr hover:text-white hover:bg-white/10">
+                <span class="material-symbols-outlined text-[20px]">favorite</span>
+                <span class="inline">Favoritos</span>
+                <span class="ml-0.5 px-1.5 py-0.2 bg-warning text-white text-[10px] font-bold rounded-full">3</span>
+              </a>   
+              <a href="/pages/notifications.html" data-hook="footer-desktop-nav" data-id="notifications" title="Avisos"
+                class="relative flex items-center justify-start gap-2 px-3 py-2 rounded-xl transition-all cursor-pointer select-none text-xs font-label no-underline txt-darkgr hover:text-white hover:bg-white/10">
+                <span class="material-symbols-outlined text-[20px]">notifications</span>
+                <span class="inline">Avisos</span>
+                <span class="ml-0.5 px-1.5 py-0.2 bg-warning text-white text-[10px] font-bold rounded-full">2</span>
+              </a>
+            </div>
+            <div class="flex flex-col items-center md:items-end gap-2 text-center md:text-right">
+              <div class="flex items-center justify-center md:justify-end gap-3 font-label text-xs txt-darkgr">
+                <a href="#terminos" data-hook="footer-noop-link" class="hover:text-white transition-colors">Términos</a>
+                <span class="opacity-30">•</span>
+                <a href="#privacidad" data-hook="footer-noop-link" class="hover:text-white transition-colors">Privacidad</a>
+                <span class="opacity-30">•</span>
+                <a href="#contacto" data-hook="footer-noop-link" class="hover:text-white transition-colors">Soporte</a>
+              </div>
+              <p class="font-label text-[11px] txt-darkgr-70">© 2026 CulturaTech Bogotá. Todos los derechos reservados.<span> Carlos Rodrigo Ortegón · ADSO-3235898</span></p>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div id="bottom-nav-root">
+      <nav class="fixed bottom-0 left-0 right-0 z-50 bg-darkbl border-t border-white/10 shadow-top px-1 py-1.5 md:hidden">
+        <div class="flex justify-between items-center max-w-lg mx-auto">
+          <a href="/pages/home.html" data-hook="bottom-nav-btn" data-id="home" class="relative flex flex-col items-center justify-center flex-1 py-1 px-0.5 rounded-xl transition-all cursor-pointer select-none no-underline txt-brand font-bold scale-105">
+            <div class="relative flex items-center justify-center">
+              <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1">home</span>
+            </div>
+            <span class="font-label text-[10px] mt-0.5 tracking-tight leading-none text-center">Inicio</span>
+          </a> 
+          <a href="/pages/events.html" data-hook="bottom-nav-btn" data-id="events"
+            class="relative flex flex-col items-center justify-center flex-1 py-1 px-0.5 rounded-xl transition-all cursor-pointer select-none no-underline txt-darkgr hover:text-white">
+            <div class="relative flex items-center justify-center">
+              <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 0">explore</span>
+              
+            </div>
+            <span class="font-label text-[10px] mt-0.5 tracking-tight leading-none text-center">Explorar</span>
+          </a>
+          <a href="/pages/agenda.html" data-hook="bottom-nav-btn" data-id="agenda"
+            class="relative flex flex-col items-center justify-center flex-1 py-1 px-0.5 rounded-xl transition-all cursor-pointer select-none no-underline txt-darkgr hover:text-white">
+            <div class="relative flex items-center justify-center">
+              <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 0">calendar_today</span>
+              <span class="absolute -top-1 -right-2 bg-warning text-white text-[9px] font-bold px-1.5 py-0.2 rounded-full border br-darkbl">3</span>
+            </div>
+            <span class="font-label text-[10px] mt-0.5 tracking-tight leading-none text-center">Agenda</span>
+          </a>
+          <a href="/pages/favorites.html" data-hook="bottom-nav-btn" data-id="favorites"
+            class="relative flex flex-col items-center justify-center flex-1 py-1 px-0.5 rounded-xl transition-all cursor-pointer select-none no-underline txt-darkgr hover:text-white">
+            <div class="relative flex items-center justify-center">
+              <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 0">favorite</span>
+              <span class="absolute -top-1 -right-2 bg-warning text-white text-[9px] font-bold px-1.5 py-0.2 rounded-full border br-darkbl">3</span>
+            </div>
+            <span class="font-label text-[10px] mt-0.5 tracking-tight leading-none text-center">Favoritos</span>
+          </a> 
+          <a href="/pages/notifications.html" data-hook="bottom-nav-btn" data-id="notifications"
+            class="relative flex flex-col items-center justify-center flex-1 py-1 px-0.5 rounded-xl transition-all cursor-pointer select-none no-underline txt-darkgr hover:text-white">
+            <div class="relative flex items-center justify-center">
+              <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 0">notifications</span>
+              <span class="absolute -top-1 -right-2 bg-warning text-white text-[9px] font-bold px-1.5 py-0.2 rounded-full border br-darkbl">2</span>
+            </div>
+            <span class="font-label text-[10px] mt-0.5 tracking-tight leading-none text-center">Avisos</span>
+          </a>
+          <a  data-hook="bottom-nav-btn" data-id="scroll-top"
+            class="relative flex flex-col items-center justify-center flex-1 py-1 px-0.5 rounded-xl transition-all cursor-pointer select-none no-underline txt-darkgr hover:text-white">
+            <div class="relative flex items-center justify-center">
+              <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 0">arrow_upward</span> 
+            </div>
+            <span class="font-label text-[10px] mt-0.5 tracking-tight leading-none text-center">Arriba</span>
+          </a>
+        </div>
+      </nav>
+    </div>
+  
+  <!-- contenido de la página -->
+
+  <div id="drawer-root"></div>
+  <script src="/js/state.js"></script>
+  <script src="/js/chrome.js"></script>
+  <script src="/js/logo.js"></script>
+  <script src="/js/header.js"></script>
+  <script src="/js/footer.js"></script>
+  <script src="/js/bottomNav.js"></script>
+  <script src="/js/drawer.js"></script>
+  <script src="/js/searchModal.js"></script>
+  <script src="/js/eventDetail.js"></script>
+</body>
+</html>

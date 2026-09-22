@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="es" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Crear cuenta — CulturaTech Bogotá</title>
+    <link rel="shortcut icon" type="image/x-icon" href="../assets/images/logo_CulturaTechBG.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Hanken+Grotesk:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../css/estilos.css">
+  </head>
+  
+  <body data-page="register" class="bg-cremlg txt-main antialiased">
+    <div id="page-content">
+      <div class="min-h-screen bg-cremlg flex flex-col items-center">
+        <!-- Encabezado de la página de registro y acceso al inicio de sesión. -->
+        <header class="w-full sticky top-0 bg-crem border-b border-darkgr-30 flex items-center justify-between px-4 md:px-10 h-20 z-40 shadow-sm">
+          <div class="flex items-center gap-3">
+            <div class="flex items-center gap-2.5 select-none  ">
+              <div class="w-11 h-11 rounded-lg p-0.5 overflow-hidden flex-shrink-0 flex items-center justify-center transition-all bg-white border border-darkgr-40 shadow-sm">
+                <img src="../assets/images/logo_CulturaTechBG.png" alt="CulturaTech Bogotá Logo" class="w-full h-full object-contain rounded-md" referrerpolicy="no-referrer" />
+              </div>
+              <span class="font-display font-bold tracking-tight txt-darkbl text-base md:text-lg">CulturaTech Bogotá</span>
+            </div>
+          </div>
+          <a href="../pages/login.html" data-hook="register-login-link" class="btn-login-register">
+            Iniciar sesión
+          </a>
+        </header>
+        <!-- Contenido principal con información introductoria y formulario de registro. -->
+        <main class="flex-grow w-full max-w-[1280px] px-4 md:px-10 py-8 md:py-12 flex items-center justify-center">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 w-full items-center">
+            <div class="hidden lg:flex flex-col gap-6">
+              <h1 class="font-display font-bold text-4xl txt-darkbln leading-tight">
+                Descubre la vibrante esencia cultural de Bogotá.
+              </h1>
+              <p class="font-body text-base txt-primary max-w-md">
+                Regístrate para acceder a convocatorias exclusivas, guardar tus eventos favoritos y explorar la agenda cultural más completa de la capital.
+              </p>
+              <div class="relative w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-xl border border-darkgr-30">
+                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMUJokjth6XPDP-qw7WKSyUh7pno2SfSi9Pt0ifGcV5VWqHq7WdCmhTb54JLrbtCz_wj-tGXR-Gp87MvRa-MyuPC7RI-GfBUm_SEcvZ5xnwNjElZy5JnK_mDMF3w2oAk3cEDJrCKegr2WHI-bEsKQjkZqKghnCBW1R1y7y5FsYP-NJSCtNHyzGEtLUa_ExjSbx-poYxv34ta_opBL3R5208M1J4nIX1JhFohcB6PYCT6AnrIjesSjeCzpV2YPeTPWeIYcWKdW70FU" alt="Cultura Bogotá" class="object-cover w-full h-full" />
+                <div class="absolute inset-0 bg-gradient-to-t from-darkbln-40 to-transparent"></div>
+              </div>
+            </div>
+
+            <div class="w-full max-w-lg mx-auto">
+              <div class="bg-white p-6 md:p-10 rounded-2xl border border-darkgr-40 shadow-xl">
+                <div class="mb-6 text-center md:text-left">
+                  <h2 class="font-display text-2xl md:text-3xl font-bold txt-darkbln mb-1">Crear Cuenta<h2>
+                  <p class="font-body text-xs md:text-sm txt-primary">Regístrate para continuar en la plataforma</p>
+                </div>
+                <!-- Formulario para registrar una nueva cuenta de usuario. -->
+                <form data-hook="register-form" class="flex flex-col gap-4">
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="flex flex-col gap-1.5">
+                      <label class="font-label text-xs font-medium txt-main">Nombres</label>
+                      <input type="text" id="reg-name" required value="" placeholder="Ej: Juan"
+                        class="w-full bg-crem border br-darkgr rounded-lg px-4 py-3 font-body text-sm outline-none focus-border-darkbln transition-all" />
+                    </div>
+                    <!-- Campos para establecer y confirmar la contraseña de la cuenta. -->
+                    <div class="flex flex-col gap-1.5">
+                      <label class="font-label text-xs font-medium txt-main">Apellidos</label>
+                      <input type="text" id="reg-lastname" required value="" placeholder="Ej: Pérez"
+                        class="w-full bg-crem border br-darkgr rounded-lg px-4 py-3 font-body text-sm outline-none focus-border-darkbln transition-all" />
+                    </div>
+                  </div>
+
+                  <div class="flex flex-col gap-1.5">
+                    <label class="font-label text-xs font-medium txt-main">Documento (Cédula)</label>
+                    <input type="text" id="reg-cedula" required value="" placeholder="Ej: 1020304050"
+                      class="w-full bg-crem border br-darkgr rounded-lg px-4 py-3 font-body text-sm outline-none focus-border-darkbln transition-all" />
+                  </div>
+
+                  <div class="flex flex-col gap-1.5">
+                    <label class="font-label text-xs font-medium txt-main">Fecha de Nacimiento</label>
+                    <div class="relative flex items-center">
+                      <input type="date" id="reg-birthdate" required value=""
+                        class="w-full bg-crem border br-darkgr rounded-lg pl-4 pr-10 py-3 font-body text-sm outline-none focus-border-darkbln transition-all" />
+                      <span class="material-symbols-outlined absolute right-3 txt-muted pointer-events-none">calendar_month</span>
+                    </div>
+                  </div>
+
+                  <div class="flex flex-col gap-1.5">
+                    <label class="font-label text-xs font-medium txt-main">Correo Electrónico</label>
+                    <div class="relative flex items-center">
+                      <span class="material-symbols-outlined absolute left-3 txt-muted">mail</span>
+                      <input type="email" id="reg-email" required value="" placeholder="Ej: juan.perez@example.com" class="w-full bg-crem border rounded-lg pl-10 pr-10 py-3 font-body text-sm outline-none transition-all br-darkgr focus-border-darkbln" />
+                    </div>
+                  </div>
+                  
+                  <div class="flex flex-col gap-1.5">
+                    <label class="font-label text-xs font-medium txt-main">Contraseña</label>
+                    <div class="relative flex items-center">
+                      <span class="material-symbols-outlined absolute left-3 txt-muted">lock</span>
+                      <input type="password" id="reg-password" required value="" placeholder="Mínimo 8 caracteres"
+                      class="w-full bg-crem border br-darkgr rounded-lg pl-10 pr-10 py-3 font-body text-sm outline-none focus-border-darkbln transition-all" />
+                      <button type="button" data-hook="register-toggle-password" class="absolute right-3 txt-muted hover-txt-darkbl cursor-pointer">
+                        <span class="material-symbols-outlined text-[20px]">visibility</span>
+                      </button>
+                    </div>
+                    <div class="flex flex-col gap-1.5 mt-2">
+                      <label class="font-label text-xs font-medium txt-main">Confirmar Contraseña</label>
+                      <div class="relative flex items-center">
+                        <span class="material-symbols-outlined absolute left-3 txt-muted">lock_reset</span>
+                        <input type="password" id="reg-confirm-password" required value="" placeholder="Repite tu contraseña" class="w-full bg-crem border rounded-lg pl-10 pr-10 py-3 font-body text-sm outline-none transition-all br-darkgr focus-border-darkbln" />
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Confirmación de aceptación de los términos y condiciones del registro. -->
+                  <div class="flex items-start gap-3 mt-2">
+                    <input type="checkbox" id="reg-terms" required 
+                      class="mt-1 w-5 h-5 rounded br-darkgr txt-darkbln focus-ring-darkbln-20 cursor-pointer" />
+                    <label for="reg-terms" class="font-body text-xs txt-primary leading-relaxed cursor-pointer">Acepto los
+                      <a href="#terms" data-hook="register-noop-link" class="txt-darkbln font-semibold hover:underline">Términos y Condiciones</a> y la
+                      <a href="#privacy" data-hook="register-noop-link" class="txt-darkbln font-semibold hover:underline">Política de Privacidad</a>.
+                    </label>
+                  </div>
+                  
+                  <button type="submit" disabled class="w-full font-body font-medium py-3.5 px-6 rounded-lg shadow-sm transition-all mt-4 cursor-pointer bg-soft  txt-muted cursor-not-allowed">Registrarse
+                  </button>
+                </form>
+                <div class="mt-8 text-center">
+                  <p class="font-body text-xs txt-primary">¿Ya tienes una cuenta?
+                    <a href="../pages/login.html" data-hook="register-goto-login" class="txt-darkbln font-bold hover:underline ml-1 cursor-pointer">Iniciar Sesión</a>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+        <!-- Pie de página con información institucional de CulturaTech Bogotá. -->
+        <footer class="w-full py-6 px-4 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-darkgr-30 bg-crem txt-primary font-label text-xs">
+          <span>Explora la cultura digital con CulturaTech Bogotá. Conectando mentes creativas.</span>
+          <span>© 2026 CulturaTech Bogotá. Todos los derechos reservados. Carlos Rodrigo Ortegón · ADSO-3235898</span>
+        </footer>
+      </div>
+    </div>
+    
+    <!-- contenido de la página -->
+
+    <div id="drawer-root"></div>
+    <script src="/js/state.js"></script>
+    <script src="/js/chrome.js"></script>
+    <script src="/js/logo.js"></script>
+    <script src="/js/register.js"></script>
+  </body>
+</html>

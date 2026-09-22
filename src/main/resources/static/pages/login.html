@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="es" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Iniciar sesión — CulturaTech Bogotá</title>
+    <link rel="shortcut icon" type="image/x-icon" href="../assets/images/logo_CulturaTechBG.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Hanken+Grotesk:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../css/estilos.css">
+  </head>
+  
+  <body data-page="login" class="bg-cremlg txt-main antialiased">
+    <div id="page-content">
+      <div class="min-h-screen flex items-center justify-center p-4 md:p-10 relative bg-cover bg-center bg-no-repeat login-background"
+        style="background-image: url('https://lh3.googleusercontent.com/aida/AP1WRLtz-1hSh7bGFI6kHCM4A6rmIdLN-t3muX9dLiWprggn-R4VoFBOBk_jJwkuk5Gyx6u8v1V29ulcJlnaqxXCaIafWK3tre1d5d-mPCu5cQHUZpb68F-PrSgjUIBJaWfW_8qXZPsp74DAEDcIoDOZmnkGMYPIpU9Nf1ha4ayJWIhJvhsW3e_H2ocYBgyCJwwmXCcWNFFQLgmUew7Ru5rNtb7qlJJO2qZpm3-YyrYM6b4_sZOvl0CtQ7Ns824')">
+        <div class="absolute inset-0 bg-darkbl-80 z-0"></div>
+        <!-- Contenido principal del formulario de inicio de sesión. -->
+        <main class="w-full max-w-[440px] flex flex-col items-center gap-4 z-10 relative">
+          <!-- Tarjeta visual que contiene los elementos de autenticación. -->
+          <div class="w-full bg-cremlg shadow-2xl rounded-2xl p-6 md:p-8 flex flex-col gap-5 relative overflow-hidden border border-darkgr-40">
+            <div class="flex flex-col items-center gap-2 mb-1">
+              <div class="flex items-center gap-2.5 select-none  " >
+                <div class="w-20 h-20 rounded-2xl p-1.5 overflow-hidden flex-shrink-0 flex items-center justify-center transition-all bg-white border border-darkgr-40 shadow-sm">
+                  <img src="../assets/images/logo_CulturaTechBG.png" alt="CulturaTech Bogotá Logo" class="w-full h-full object-contain rounded-md" referrerpolicy="no-referrer" />
+                </div>
+              </div>
+              <h1 class="font-display font-bold text-2xl md:text-3xl txt-darkbl text-center mt-2">App Cultura Bogotá</h1>
+              <p class="font-body text-xs md:text-sm txt-primary text-center max-w-[320px]">Explora la cultura, el arte y los eventos más destacados de Bogotá</p>
+            </div>
+            <!-- Formulario para ingresar las credenciales del usuario. -->
+            <form data-hook="login-form" class="flex flex-col gap-4">
+              <div class="flex flex-col gap-1">
+                <label for="login-email" class="font-label text-xs txt-main ml-4 font-medium">Correo Electrónico</label>
+                <div class="relative flex items-center rounded-full bg-crem border transition-all  br-lightgreen focus-within:ring-1 focus-within-ring-lightgreen">
+                  <span class="material-symbols-outlined absolute left-4 txt-muted text-[20px]">mail</span>
+                  <input id="login-email" type="email"  value=" "
+                    placeholder="ejemplo@correo.com"
+                    class="w-full pl-11 pr-11 py-3 bg-transparent border-none rounded-full font-body text-sm outline-none focus:ring-0 txt-main placeholder-txt-muted" required />
+                  <span class="material-symbols-outlined absolute right-4 txt-lightgreen text-[20px]">check_circle</span>
+                </div>  
+              </div>
+              <div class="flex flex-col gap-1">
+                <div class="flex justify-between items-center px-4">
+                  <label for="login-password" class="font-label text-xs txt-main font-medium">Contraseña</label>
+                  <button type="button" data-hook="login-forgot-btn" class="font-label text-[11px] txt-body hover:underline cursor-pointer">¿Olvidaste tu contraseña?</button>
+                </div>
+                <div class="relative flex items-center rounded-full bg-crem border br-darkgr transition-all focus-within-border-darkb">
+                  <span class="material-symbols-outlined absolute left-4 txt-muted text-[20px]">lock</span>
+                  <input id="login-password" type="password"  value="ttyuyuyiui" placeholder="Mínimo 8 caracteres"
+                    class="w-full pl-11 pr-12 py-3 bg-transparent border-none rounded-full font-body text-sm outline-none focus:ring-0 txt-main placeholder-txt-muted" required />
+                  <button type="button" data-hook="login-toggle-password"  class="absolute right-4 txt-muted hover-txt-darkbl transition-colors cursor-pointer">
+                    <span class="material-symbols-outlined text-[20px]">visibility</span>
+                  </button>
+                </div>
+                <!-- Muestra los requisitos utilizados para validar la contraseña. -->
+                <div class="flex flex-col gap-1.5 px-4 mt-2 bg-crem p-3 rounded-xl border border-darkgr-30">
+                  <div class="flex items-center justify-between">
+                    <span class="font-label text-xs font-bold txt-main">Requisitos de contraseña</span>
+                    <div class="flex items-center gap-1">
+                      <span class="font-label text-[11px] txt-primary">Fortaleza: </span>
+                      <span class="font-label text-[11px] font-bold txt-danger">Débil</span>
+                    </div>
+                  </div>
+                  <div class="flex flex-col gap-1 text-[11px] font-body mt-1">
+                    <div class="flex items-center gap-2 txt-lightgreen">
+                      <span class="font-bold">✓</span>
+                      <span>Mínimo 8 caracteres</span>
+                    </div>
+       
+                    <div class="flex items-center gap-2 txt-danger">
+                      <span class="w-1.5 h-1.5 rounded-full bg-danger"></span>
+                      <span>Una letra mayúscula (A-Z)</span>
+                    </div>
+                  
+                    <div class="flex items-center gap-2 txt-lightgreen">
+                      <span class="font-bold">✓</span>
+                      <span>Una letra minúscula (a-z)</span>
+                    </div>
+                     
+                    <div class="flex items-center gap-2 txt-danger">
+                      <span class="w-1.5 h-1.5 rounded-full bg-danger"></span>
+                      <span>Un número (0-9)</span>
+                    </div>
+                      
+                    <div class="flex items-center gap-2 txt-danger">
+                      <span class="w-1.5 h-1.5 rounded-full bg-danger"></span>
+                      <span>Un carácter especial (@#$!()?&%)</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Validación adicional requerida antes de permitir el inicio de sesión. -->
+              <div class="flex flex-col gap-1.5 mt-1">
+                <label class="font-label text-xs txt-main ml-4 font-medium">Validación de seguridad</label>
+                <div data-hook="login-captcha-box" class="flex items-center justify-between p-3.5 border rounded-2xl bg-crem transition-colors cursor-pointer br-darkgr ">
+                  <div class="flex items-center gap-3">
+                    <input type="checkbox" id="login-captcha-checkbox"   class="w-5 h-5 rounded br-muted txt-darkbl focus-within-border-darkbl cursor-pointer" />
+                    <div class="flex flex-col">
+                      <span class="font-body text-xs txt-main font-medium">Confirma que eres una persona</span>
+                      <span class="font-label text-[10px] txt-primary">Requerido para continuar</span>
+                    </div>
+                  </div>
+                  <span class="material-symbols-outlined txt-muted">shield_person</span>
+                </div>
+              </div>
+
+              <button type="submit" disabled class="w-full font-body font-semibold py-3.5 px-6 rounded-full shadow-md transition-all mt-2 cursor-pointer bg-soft txt-muted cursor-not-allowed">
+                Ingresar
+              </button>
+            </form>
+            <div class="flex items-center gap-2 my-2">
+              <div class="h-[1px] flex-1 bg-darkgr-50"></div>
+              <span class="font-label text-[10px] txt-primary uppercase tracking-widest px-1">o ingresa con</span>
+              <div class="h-[1px] flex-1 bg-darkgr-50"></div>
+            </div>
+            <!-- Opciones adicionales de acceso mediante servicios externos. -->
+            <div class="flex gap-3">
+              <button type="button" data-hook="login-google-btn" class="flex-1 flex items-center justify-center py-2.5 border br-darkgr rounded-full text-xs font-label txt-primary hover-bg-crem transition-colors cursor-pointer">Google</button>
+              <button type="button" data-hook="login-facebook-btn" class="flex-1 flex items-center justify-center py-2.5 border br-darkgr rounded-full text-xs font-label txt-primary hover-bg-crem transition-colors cursor-pointer">Facebook</button>
+            </div>
+            <p class="font-body text-xs txt-main text-center mt-2">
+              ¿Aún no eres parte?
+              <a href="../pages/register.html" data-hook="login-goto-register" class="txt-body font-bold ml-1 hover:underline cursor-pointer no-underline">Regístrate aquí</a>
+            </p>
+          </div>
+        </main>
+      </div>
+    </div>
+    
+    <!-- contenido de la página -->
+
+    <div id="drawer-root"></div>
+    <script src="/js/state.js"></script>
+    <script src="/js/chrome.js"></script>
+    <script src="/js/logo.js"></script>
+    <script src="/js/login.js"></script>
+  </body>
+</html>

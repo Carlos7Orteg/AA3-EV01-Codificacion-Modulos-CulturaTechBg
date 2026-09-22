@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Administración - CulturaTech Bogotá</title>
+
+    <!-- Fuentes e iconos utilizados por la interfaz. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,400,0,0"
+          rel="stylesheet">
+
+    <!-- Hoja de estilos principal del proyecto. -->
+    <link rel="stylesheet" href="/css/estilos.css">
+</head>
+
+<body class="admin-page">
+
+    <!-- Contenedor principal del panel administrativo. -->
+    <div class="admin-shell">
+
+        <!-- Enlace para regresar a la página principal. -->
+        <div class="admin-back">
+            <a href="/pages/home.html">
+                <span class="material-symbols-outlined">arrow_back</span>
+                Volver al proyecto
+            </a>
+        </div>
+
+        <!-- Hoja principal que contiene el panel administrativo. -->
+        <main class="admin-sheet">
+
+            <!-- Encabezado del panel. -->
+            <header class="admin-top">
+                <div class="admin-brand">
+
+                    <!-- Logo de CulturaTech Bogotá. -->
+                    <div class="admin-brand-logo">
+                        <img src="/assets/images/logo_CulturaTechBG.png"
+                             alt="CulturaTech Bogotá">
+                    </div>
+
+                    <div>
+                        <span class="admin-eyebrow">GESTIÓN DEL SISTEMA</span>
+                        <h1>Panel administrativo</h1>
+                        <p>
+                            Administra usuarios y eventos desde un único espacio.
+                        </p>
+                    </div>
+
+                </div>
+            </header>
+
+            <!-- Contenido principal del panel. -->
+            <section class="admin-content">
+
+                <!-- Mensajes generados por las operaciones del panel. -->
+                <div id="admin-alert" class="admin-alert" hidden>
+                    <span id="admin-alert-icon"
+                          class="material-symbols-outlined"></span>
+
+                    <span id="admin-alert-message"></span>
+                </div>
+
+                <!-- Navegación entre las secciones administrativas. -->
+                <nav class="admin-nav" aria-label="Secciones administrativas">
+
+                    <a href="#usuarios"
+                       class="active"
+                       data-admin-section="usuarios">
+                        <span class="material-symbols-outlined">group</span>
+                        Usuarios
+                    </a>
+
+                    <a href="#eventos"
+                       data-admin-section="eventos">
+                        <span class="material-symbols-outlined">event</span>
+                        Eventos
+                    </a>
+                    
+                    <a href="#categorias"
+                        data-admin-section="categorias"
+                        class="admin-nav-item">
+                        <span class="material-symbols-outlined">category</span>
+                        <span>Categorías</span>
+                    </a>
+                    
+                    <a href="#lugares"
+                        data-admin-section="lugares"
+                        class="admin-nav-item">
+                        <span class="material-symbols-outlined">location_on</span>
+                        <span>Lugares</span>
+                    </a>
+
+                </nav>
+
+                <!-- =====================================================
+                     SECCIÓN DE USUARIOS
+                     ===================================================== -->
+                <section id="usuarios" data-admin-panel="usuarios">
+
+                    <div class="admin-section-head">
+
+                        <div>
+                            <h2>Gestión de usuarios</h2>
+                            <p>
+                                Registra, modifica y elimina cuentas del sistema.
+                            </p>
+                        </div>
+
+                        <!-- Cantidad de usuarios cargados desde Spring Boot. -->
+                        <span id="usuarios-count" class="admin-stat">
+                            0 registros
+                        </span>
+
+                    </div>
+
+                    <div class="admin-workspace">
+
+                        <!-- Formulario para crear o actualizar usuarios. -->
+                        <div class="admin-editor">
+
+                            <h3 id="usuario-form-title">
+                                Registrar usuario
+                            </h3>
+
+                            <form id="usuario-form"
+                                  class="admin-form-grid">
+
+                                <!-- Identificador utilizado cuando se actualiza un usuario. -->
+                                <input type="hidden"
+                                       id="usuario-id">
+
+                                <div class="admin-field">
+
+                                    <label for="usuario-nombres">
+                                        Nombres
+                                    </label>
+
+                                    <input id="usuario-nombres"
+                                           name="nombres"
+                                           required>
+
+                                </div>
+
+                                <div class="admin-field">
+
+                                    <label for="usuario-apellidos">
+                                        Apellidos
+                                    </label>
+
+                                    <input id="usuario-apellidos"
+                                           name="apellidos"
+                                           required>
+
+                                </div>
+
+                                <div class="admin-field">
+
+                                    <label for="usuario-documento">
+                                        Documento
+                                    </label>
+
+                                    <input id="usuario-documento"
+                                           name="documento"
+                                           required>
+
+                                </div>
+
+                                <div class="admin-field">
+
+                                    <label for="usuario-fecha">
+                                        Fecha de nacimiento
+                                    </label>
+
+                                    <input id="usuario-fecha"
+                                           type="date"
+                                           name="fechaNacimiento"
+                                           required>
+
+                                </div>
+
+                                <div class="admin-field admin-field-full">
+
+                                    <label for="usuario-correo">
+                                        Correo electrónico
+                                    </label>
+
+                                    <input id="usuario-correo"
+                                           type="email"
+                                           name="correo"
+                                           required>
+
+                                </div>
+
+                                <div class="admin-field">
+
+                                    <label for="usuario-contrasena">
+                                        Contraseña
+                                    </label>
+
+                                    <input id="usuario-contrasena"
+                                           type="password"
+                                           name="contrasena"
+                                           minlength="8"
+                                           placeholder="Contraseña">
+
+                                </div>
+
+                                <div class="admin-field">
+
+                                    <label for="usuario-rol">
+                                        Rol
+                                    </label>
+
+                                    <select id="usuario-rol"
+                                            name="rol">
+
+                                        <option value="USER">
+                                            USER
+                                        </option>
+
+                                        <option value="ADMIN">
+                                            ADMIN
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
+                                <div class="admin-form-actions">
+
+                                    <!-- Botón para cancelar la edición de un usuario. -->
+                                    <button type="button"
+                                            id="usuario-cancelar"
+                                            class="admin-btn admin-btn-secondary"
+                                            hidden>
+
+                                        <span class="material-symbols-outlined">
+                                            close
+                                        </span>
+
+                                        Cancelar
+
+                                    </button>
+
+                                    <!-- Botón para guardar el usuario. -->
+                                    <button type="submit"
+                                            class="admin-btn admin-btn-primary">
+
+                                        <span id="usuario-submit-icon"
+                                              class="material-symbols-outlined">
+                                            person_add
+                                        </span>
+
+                                        <span id="usuario-submit-text">
+                                            Registrar usuario
+                                        </span>
+
+                                    </button>
+
+                                </div>
+
+                            </form>
+
+                        </div>
+
+                        <!-- Lista de usuarios obtenidos desde Spring Boot. -->
+                        <div class="admin-list">
+
+                            <div class="admin-list-header">
+                                <h3>Usuarios registrados</h3>
+                            </div>
+
+                            <div class="admin-table-wrap">
+
+                                <table class="admin-table">
+
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Nombre</th>
+                                            <th>Correo</th>
+                                            <th>Rol</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+
+                                    <!-- JavaScript insertará aquí los usuarios. -->
+                                    <tbody id="usuarios-table-body"></tbody>
+
+                                </table>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+                <!-- =====================================================
+                     SECCIÓN DE EVENTOS
+                     ===================================================== -->
+                <section id="eventos"
+                         data-admin-panel="eventos"
+                         hidden>
+
+                    <div class="admin-section-head">
+
+                        <div>
+                            <h2>Gestión de eventos</h2>
+
+                            <p>
+                                Administra la información que se refleja
+                                en las interfaces de eventos.
+                            </p>
+                        </div>
+
+                        <!-- Cantidad de eventos cargados desde Spring Boot. -->
+                        <span id="eventos-count"
+                              class="admin-stat">
+                            0 registros
+                        </span>
+
+                    </div>
+
+                    <div class="admin-workspace">
+
+                        <!-- Formulario para crear o actualizar eventos. -->
+                        <div class="admin-editor">
+
+                            <h3 id="evento-form-title">
+                                Registrar evento
+                            </h3>
+
+                            <form id="evento-form"
+                                  class="admin-form-grid">
+
+                                <!-- Identificador utilizado para actualizar un evento. -->
+                                <input type="hidden"
+                                       id="evento-id">
+
+                                <div class="admin-field admin-field-full">
+
+                                    <label for="evento-titulo">
+                                        Título
+                                    </label>
+
+                                    <input id="evento-titulo"
+                                           name="titulo"
+                                           required>
+
+                                </div>
+
+                                <div class="admin-field admin-field-full">
+
+                                    <label for="evento-descripcion">
+                                        Descripción
+                                    </label>
+
+                                    <textarea id="evento-descripcion"
+                                              name="descripcion"></textarea>
+
+                                </div>
+
+                                <div class="admin-field">
+
+                                    <label for="evento-fecha">
+                                        Fecha y hora
+                                    </label>
+
+                                    <input id="evento-fecha"
+                                           type="datetime-local"
+                                           name="fechaHora"
+                                           required>
+
+                                </div>
+
+                                <div class="admin-field">
+
+                                    <label for="evento-costo">
+                                        Costo
+                                    </label>
+
+                                    <input id="evento-costo"
+                                           type="number"
+                                           step="0.01"
+                                           min="0"
+                                           name="costo"
+                                           value="0">
+
+                                </div>
+
+                                <div class="admin-field admin-field-full">
+
+                                    <label for="evento-imagen">
+                                        URL de imagen
+                                    </label>
+
+                                    <input id="evento-imagen"
+                                           name="imagen">
+
+                                </div>
+
+                                <div class="admin-field">
+
+                                    <label for="evento-estado">
+                                        Estado
+                                    </label>
+
+                                    <select id="evento-estado"
+                                            name="estado">
+
+                                        <option value="ACTIVO">
+                                            ACTIVO
+                                        </option>
+
+                                        <option value="INACTIVO">
+                                            INACTIVO
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
+                                <div class="admin-field">
+
+                                    <label for="evento-categoria">
+                                        Categoría
+                                    </label>
+
+                                    <select id="evento-categoria"
+                                            name="idCategoria"
+                                            required>
+                                    </select>
+
+                                </div>
+
+                                <div class="admin-field">
+
+                                    <label for="evento-lugar">
+                                        Lugar
+                                    </label>
+
+                                    <select id="evento-lugar"
+                                            name="idLugar"
+                                            required>
+                                    </select>
+
+                                </div>
+
+                                <div class="admin-form-actions">
+
+                                    <!-- Botón para cancelar la edición de un evento. -->
+                                    <button type="button"
+                                            id="evento-cancelar"
+                                            class="admin-btn admin-btn-secondary"
+                                            hidden>
+
+                                        <span class="material-symbols-outlined">
+                                            close
+                                        </span>
+
+                                        Cancelar
+
+                                    </button>
+
+                                    <!-- Botón para guardar el evento. -->
+                                    <button type="submit"
+                                            class="admin-btn admin-btn-primary">
+
+                                        <span id="evento-submit-icon"
+                                              class="material-symbols-outlined">
+                                            add
+                                        </span>
+
+                                        <span id="evento-submit-text">
+                                            Registrar evento
+                                        </span>
+
+                                    </button>
+
+                                </div>
+
+                            </form>
+
+                        </div>
+
+                        <!-- Lista de eventos obtenidos desde Spring Boot. -->
+                        <div class="admin-list">
+
+                            <div class="admin-list-header">
+                                <h3>Eventos registrados</h3>
+                            </div>
+
+                            <div id="eventos-list"
+                                 class="admin-card-grid">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+                
+                <!-- ====================================================
+                     SECCIÓN DE CATEGORÍAS
+                     ================================================= -->
+                <section id="categorias" 
+                         data-admin-panel="categorias" 
+                         hidden>
+
+                    <div class="admin-section-head">
+                        <div>
+                            <h2>Gestión de categorías</h2>
+                            <p>Registra, modifica y elimina las categorías de eventos.</p>
+                        </div>
+
+                        <span class="admin-stat" id="categorias-count">
+                            0 registros
+                        </span>
+                    </div>
+
+                    <div class="admin-workspace">
+                        <div class="admin-editor">
+                            <h3>Registrar categoría</h3>
+
+                            <form id="categoria-form" class="admin-form-grid">
+                                <input type="hidden" id="categoria-id">
+
+                                <div class="admin-field">
+                                    <label for="categoria-nombre">
+                                        Nombre de la categoría
+                                    </label>
+                                    <input
+                                        id="categoria-nombre"
+                                        type="text"
+                                        required
+                                        maxlength="100">
+                                </div>
+
+                                <div class="admin-field admin-field-full">
+                                    <label for="categoria-descripcion">
+                                        Descripción
+                                    </label>
+                                    <textarea
+                                        id="categoria-descripcion"
+                                        maxlength="255"></textarea>
+                                </div>
+
+                                <div class="admin-form-actions">
+                                    <button
+                                        type="button"
+                                        id="categoria-cancelar"
+                                        class="admin-btn admin-btn-secondary hidden">
+
+                                        <span class="material-symbols-outlined">
+                                            close
+                                        </span>
+                                        Cancelar
+                                    </button>
+
+                                    <button
+                                        type="submit"
+                                        class="admin-btn admin-btn-primary">
+
+                                        <span
+                                            class="material-symbols-outlined"
+                                            id="categoria-submit-icon">
+                                            category
+                                        </span>
+
+                                        <span id="categoria-submit-text">
+                                            Registrar categoría
+                                        </span>
+                                    </button>
+                                </div>
+
+                            </form>
+                        </div>
+
+                        <div class="admin-list">
+                            <div class="admin-list-header">
+                                <h3>Categorías registradas</h3>
+                            </div>
+
+                            <div class="admin-table-wrap">
+                                <table class="admin-table">
+
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Nombre</th>
+                                            <th>Descripción</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody id="categorias-table-body">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+                
+                <!-- ====================================================
+                     SECCIÓN DE LUGARES
+                     ================================================= -->
+                <section id="lugares" data-admin-panel="lugares" hidden>
+                    <div class="admin-section-head">
+                        <div>
+                            <h2>Gestión de lugares</h2>
+                            <p>Registra, modifica y elimina los lugares de los eventos.</p>
+                        </div>
+
+                        <span class="admin-stat" id="lugares-count">
+                            0 registros
+                        </span>
+                    </div>
+
+                    <div class="admin-workspace">
+                        <div class="admin-editor">
+                            <h3>Registrar lugar</h3>
+                            <form id="lugar-form" class="admin-form-grid">
+                                <input type="hidden" id="lugar-id">
+
+                                <div class="admin-field">
+                                    <label for="lugar-nombre">Nombre del lugar</label>
+                                    <input
+                                        id="lugar-nombre"
+                                        type="text"
+                                        required
+                                        maxlength="150">
+                                </div>
+
+                                <div class="admin-field">
+                                    <label for="lugar-direccion">Dirección</label>
+                                    <input
+                                        id="lugar-direccion"
+                                        type="text"
+                                        maxlength="200">
+                                </div>
+
+                                <div class="admin-field">
+                                    <label for="lugar-localidad">Localidad</label>
+                                    <input
+                                        id="lugar-localidad"
+                                        type="text"
+                                        maxlength="100">
+                                </div>
+
+                                <div class="admin-field">
+                                    <label for="lugar-telefono">Teléfono</label>
+                                    <input
+                                        id="lugar-telefono"
+                                        type="text"
+                                        maxlength="150">
+                                </div>
+
+                                <div class="admin-field">
+                                    <label for="lugar-latitud">Latitud</label>
+                                    <input
+                                        id="lugar-latitud"
+                                        type="number"
+                                        step="any">
+                                </div>
+
+                                <div class="admin-field">
+                                    <label for="lugar-longitud">Longitud</label>
+                                    <input
+                                        id="lugar-longitud"
+                                        type="number"
+                                        step="any">
+                                </div>
+
+                                <div class="admin-field admin-field-full">
+                                    <label for="lugar-pagina">Página web</label>
+                                    <input
+                                        id="lugar-pagina"
+                                        type="text"
+                                        maxlength="255">
+                                </div>
+
+                                <div class="admin-form-actions">
+                                    <button
+                                        type="button"
+                                        id="lugar-cancelar"
+                                        class="admin-btn admin-btn-secondary hidden">
+
+                                        <span class="material-symbols-outlined">
+                                            close
+                                        </span>
+                                        Cancelar
+                                    </button>
+
+                                    <button
+                                        type="submit"
+                                        class="admin-btn admin-btn-primary">
+
+                                        <span
+                                            class="material-symbols-outlined"
+                                            id="lugar-submit-icon">
+                                            location_on
+                                        </span>
+
+                                        <span id="lugar-submit-text">
+                                            Registrar lugar
+                                        </span>
+                                    </button>
+                                </div>
+
+                            </form>
+                        </div>
+
+                        <div class="admin-list">
+                            <div class="admin-list-header">
+                                <h3>Lugares registrados</h3>
+                            </div>
+
+                            <div class="admin-table-wrap">
+                                <table class="admin-table">
+
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Nombre</th>
+                                            <th>Dirección</th>
+                                            <th>Localidad</th>
+                                            <th>Teléfono</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody id="lugares-table-body">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </section>
+        </main>
+
+        <!-- Pie del panel administrativo. -->
+        <div class="admin-footer-note">
+            CulturaTech Bogotá · Gestión administrativa del sistema.
+        </div>
+
+    </div>
+
+    <!-- Lógica JavaScript del panel administrativo. -->
+    <script src="/js/admin.js"></script>
+
+</body>
+
+</html>
