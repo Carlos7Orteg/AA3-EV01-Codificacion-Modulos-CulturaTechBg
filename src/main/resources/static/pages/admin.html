@@ -755,6 +755,112 @@
 
     </div>
 
+        <!-- Ventana de seguridad para operaciones que requieren autenticación adicional. -->
+    <div id="usuario-seguridad-modal"
+         class="admin-modal"
+         hidden>
+
+        <div class="admin-modal-content">
+
+            <div class="admin-modal-header">
+                <div>
+                    <span class="admin-eyebrow">SEGURIDAD</span>
+                    <h2 id="usuario-seguridad-titulo">
+                        Confirmación de seguridad
+                    </h2>
+                </div>
+
+                <button type="button"
+                        id="usuario-seguridad-cerrar"
+                        class="admin-modal-close"
+                        aria-label="Cerrar">
+                    <span class="material-symbols-outlined">
+                        close
+                    </span>
+                </button>
+            </div>
+
+            <div id="usuario-seguridad-mensaje"
+                 class="admin-modal-message">
+            </div>
+
+            <form id="usuario-seguridad-form"
+                  class="admin-form-grid">
+
+                <div id="campo-contrasena-seguridad"
+                     class="admin-field admin-field-full"
+                     hidden>
+
+                    <label for="usuario-contrasena-seguridad">
+                        Contraseña del administrador
+                    </label>
+
+                    <input id="usuario-contrasena-seguridad"
+                           type="password"
+                           autocomplete="current-password">
+                </div>
+
+                <div id="campos-cambio-contrasena"
+                     hidden>
+
+                    <div class="admin-field admin-field-full">
+
+                        <label for="usuario-contrasena-actual">
+                            Contraseña actual
+                        </label>
+
+                        <input id="usuario-contrasena-actual"
+                               type="password"
+                               autocomplete="current-password">
+                    </div>
+
+                    <div class="admin-field admin-field-full">
+
+                        <label for="usuario-nueva-contrasena">
+                            Nueva contraseña
+                        </label>
+
+                        <input id="usuario-nueva-contrasena"
+                               type="password"
+                               minlength="8"
+                               autocomplete="new-password">
+                    </div>
+
+                    <div class="admin-field admin-field-full">
+
+                        <label for="usuario-confirmar-contrasena">
+                            Confirmar nueva contraseña
+                        </label>
+
+                        <input id="usuario-confirmar-contrasena"
+                               type="password"
+                               minlength="8"
+                               autocomplete="new-password">
+                    </div>
+
+                </div>
+
+                <div class="admin-form-actions">
+
+                    <button type="button"
+                            id="usuario-seguridad-cancelar"
+                            class="admin-btn admin-btn-secondary">
+                        Cancelar
+                    </button>
+
+                    <button type="submit"
+                            class="admin-btn admin-btn-primary">
+                        Confirmar
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
     <!-- Lógica JavaScript del panel administrativo. -->
     <script src="/js/admin.js"></script>
 

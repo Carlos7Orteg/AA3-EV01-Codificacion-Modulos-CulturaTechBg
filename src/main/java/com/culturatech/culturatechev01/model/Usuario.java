@@ -45,7 +45,6 @@ public class Usuario {
 
     // Contraseña almacenada para la autenticación del usuario.
     @Column(name = "contraseña", nullable = false, length = 255)
-    @JsonIgnore
     private String contrasena;
 
     // Rol asignado al usuario dentro del sistema.

@@ -223,6 +223,7 @@ async function cargarUsuarios() {
 
 
 // Guarda un usuario nuevo o actualiza uno existente.
+// Cuando la operación requiere seguridad adicional, utiliza el modal definido en admin.html.
 async function guardarUsuario(event) {
 
     // Evita que el formulario recargue la página.
@@ -242,14 +243,246 @@ async function guardarUsuario(event) {
         rol: document.getElementById('usuario-rol').value
     };
 
-    // Determina si se crea o actualiza el registro.
-    const url = id
-        ? `/api/usuarios/${id}`
-        : '/api/usuarios';
-
-    const method = id ? 'PUT' : 'POST';
+    // Almacena las credenciales adicionales requeridas por el backend.
+    let seguridad = {};
 
     try {
+
+        // Cuando se actualiza un usuario, determina quién realiza la operación
+        // y cuál es el rol actual del usuario que se está modificando.
+        if (id) {
+
+            const perfilResponse = await fetch('/api/auth/perfil');
+
+            if (!perfilResponse.ok) {
+                throw new Error('Sesión no válida.');
+            }
+
+            const administrador = await perfilResponse.json();
+
+            const objetivoResponse =
+                    await fetch(`/api/usuarios/${id}`);
+
+            if (!objetivoResponse.ok) {
+                throw new Error('No fue posible consultar el usuario.');
+            }
+
+            const objetivo = await objetivoResponse.json();
+
+            // Determina si el administrador está editando su propio usuario.
+            const esPropioUsuario =
+                    Number(administrador.idUsuario) === Number(id);
+
+            // ========================================================
+            // SEGURIDAD PARA EDITAR OTRO ADMINISTRADOR
+            // ========================================================
+            if (!esPropioUsuario && objetivo.rol === 'ADMIN') {
+
+                const modal =
+                        document.getElementById('usuario-seguridad-modal');
+
+                const form =
+                        document.getElementById('usuario-seguridad-form');
+
+                const titulo =
+                        document.getElementById('usuario-seguridad-titulo');
+
+                const mensaje =
+                        document.getElementById('usuario-seguridad-mensaje');
+
+                const campoSeguridad =
+                        document.getElementById('campo-contrasena-seguridad');
+
+                const camposCambio =
+                        document.getElementById('campos-cambio-contrasena');
+
+                const contrasenaSeguridad =
+                        document.getElementById(
+                                'usuario-contrasena-seguridad'
+                                );
+
+                const cancelar =
+                        document.getElementById('usuario-seguridad-cancelar');
+
+                const cerrar =
+                        document.getElementById('usuario-seguridad-cerrar');
+
+                titulo.textContent = 'Confirmación de seguridad';
+
+                mensaje.textContent =
+                        'Para editar otro administrador, confirme su contraseña.';
+
+                campoSeguridad.hidden = false;
+                camposCambio.hidden = true;
+
+                contrasenaSeguridad.value = '';
+
+                modal.hidden = false;
+
+                const datosSeguridad = await new Promise(resolve => {
+
+                    // Confirma la contraseña del administrador que realiza la operación.
+                    form.onsubmit = function (modalEvent) {
+
+                        modalEvent.preventDefault();
+
+                        const contrasena =
+                                contrasenaSeguridad.value;
+
+                        if (!contrasena.trim()) {
+                            mensaje.textContent =
+                                    'Debe ingresar la contraseña del administrador.';
+                            return;
+                        }
+
+                        modal.hidden = true;
+
+                        resolve({
+                            contrasenaSeguridad: contrasena
+                        });
+                    };
+
+                    // Cancela la operación de seguridad.
+                    cancelar.onclick = function () {
+                        modal.hidden = true;
+                        resolve(null);
+                    };
+
+                    // Cierra la ventana de seguridad.
+                    cerrar.onclick = function () {
+                        modal.hidden = true;
+                        resolve(null);
+                    };
+                });
+
+                // Si se cancela la ventana, no continúa con la actualización.
+                if (!datosSeguridad) {
+                    return;
+                }
+
+                seguridad = datosSeguridad;
+            }
+
+            // ========================================================
+            // SEGURIDAD PARA CAMBIAR LA PROPIA CONTRASEÑA
+            // ========================================================
+            if (esPropioUsuario && usuario.contrasena.trim()) {
+
+                const modal =
+                        document.getElementById('usuario-seguridad-modal');
+
+                const form =
+                        document.getElementById('usuario-seguridad-form');
+
+                const titulo =
+                        document.getElementById('usuario-seguridad-titulo');
+
+                const mensaje =
+                        document.getElementById('usuario-seguridad-mensaje');
+
+                const campoSeguridad =
+                        document.getElementById('campo-contrasena-seguridad');
+
+                const camposCambio =
+                        document.getElementById('campos-cambio-contrasena');
+
+                const contrasenaActual =
+                        document.getElementById('usuario-contrasena-actual');
+
+                const nuevaContrasena =
+                        document.getElementById('usuario-nueva-contrasena');
+
+                const confirmarContrasena =
+                        document.getElementById(
+                                'usuario-confirmar-contrasena'
+                                );
+
+                const cancelar =
+                        document.getElementById('usuario-seguridad-cancelar');
+
+                const cerrar =
+                        document.getElementById('usuario-seguridad-cerrar');
+
+                titulo.textContent = 'Cambio de contraseña';
+
+                mensaje.textContent =
+                        'Ingrese su contraseña actual y la nueva contraseña.';
+
+                campoSeguridad.hidden = true;
+                camposCambio.hidden = false;
+
+                contrasenaActual.value = '';
+                nuevaContrasena.value = '';
+                confirmarContrasena.value = '';
+
+                modal.hidden = false;
+
+                const datosCambio = await new Promise(resolve => {
+
+                    // Procesa la solicitud de cambio de contraseña.
+                    form.onsubmit = function (modalEvent) {
+
+                        modalEvent.preventDefault();
+
+                        if (
+                                !contrasenaActual.value.trim()
+                                || !nuevaContrasena.value.trim()
+                                || !confirmarContrasena.value.trim()
+                                ) {
+                            mensaje.textContent =
+                                    'Debe completar los tres campos de contraseña.';
+                            return;
+                        }
+
+                        if (
+                                nuevaContrasena.value
+                                !== confirmarContrasena.value
+                                ) {
+                            mensaje.textContent =
+                                    'La nueva contraseña y su confirmación no coinciden.';
+                            return;
+                        }
+
+                        modal.hidden = true;
+
+                        resolve({
+                            contrasenaActual:
+                                    contrasenaActual.value,
+                            nuevaContrasena:
+                                    nuevaContrasena.value,
+                            confirmarContrasena:
+                                    confirmarContrasena.value
+                        });
+                    };
+
+                    // Cancela el cambio de contraseña.
+                    cancelar.onclick = function () {
+                        modal.hidden = true;
+                        resolve(null);
+                    };
+
+                    // Cierra la ventana de cambio.
+                    cerrar.onclick = function () {
+                        modal.hidden = true;
+                        resolve(null);
+                    };
+                });
+
+                // Si se cancela la ventana, no continúa con la actualización.
+                if (!datosCambio) {
+                    return;
+                }
+
+                seguridad = datosCambio;
+            }
+        }
+
+        // Determina si se crea o se actualiza el registro.
+        const url = id
+                ? `/api/usuarios/${id}`
+                : '/api/usuarios';
+
+        const method = id ? 'PUT' : 'POST';
 
         // Envía los datos al controlador Spring Boot.
         const response = await fetch(url, {
@@ -257,21 +490,41 @@ async function guardarUsuario(event) {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(usuario)
+            body: JSON.stringify({
+                usuario: {
+                    idUsuario: id,
+                    nombres: usuario.nombres,
+                    apellidos: usuario.apellidos,
+                    documento: usuario.documento,
+                    fechaNacimiento: usuario.fechaNacimiento,
+                    correo: usuario.correo,
+                    contrasena: usuario.contrasena,
+                    rol: usuario.rol
+                },
+
+                ...seguridad
+            })
         });
 
         // Comprueba el resultado de la operación.
         if (!response.ok) {
-            throw new Error('No fue posible guardar el usuario.');
+
+            const errorData =
+                    await response.json().catch(() => ({}));
+
+            throw new Error(
+                    errorData.mensaje
+                    || 'No fue posible guardar el usuario.'
+                    );
         }
 
         // Muestra confirmación al usuario.
         mostrarAlerta(
-            id
+                id
                 ? 'Usuario actualizado correctamente.'
                 : 'Usuario registrado correctamente.',
-            'success'
-        );
+                'success'
+                );
 
         // Limpia el formulario.
         limpiarFormularioUsuario();
@@ -285,7 +538,6 @@ async function guardarUsuario(event) {
         mostrarAlerta(error.message, 'error');
     }
 }
-
 
 // Carga un usuario en el formulario para editarlo.
 async function editarUsuario(id) {

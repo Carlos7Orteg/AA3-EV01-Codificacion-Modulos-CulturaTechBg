@@ -240,7 +240,7 @@ const LoginPage = {
                 </div>
 
                 <!-- Validador de contraseña -->
-                ${!allReqsMet && s.password.length > 0
+                ${s.password.length > 0
                   ? `
                 <div class="flex flex-col gap-1.5 px-4 mt-2 bg-crem p-3 rounded-xl border border-darkgr-30">
                   <div class="flex items-center justify-between">
@@ -423,70 +423,31 @@ const LoginPage = {
     if (passwordInput) {
       passwordInput.addEventListener("input", (e) => {
         s.password = e.target.value;
-
-        const password = s.password;
-        const reqLen = password.length >= 8;
-        const reqUpper = /[A-Z]/.test(password);
-        const reqLower = /[a-z]/.test(password);
-        const reqNum = /[0-9]/.test(password);
-        const reqSpec = /[@#$!()?&%]/.test(password);
-        const updateRequirement = (selector, met) => {
-          const element = container.querySelector(selector);
-          if (!element) {
-            return;
-          }
-
-          element.className = `flex items-center gap-2 ${met ? "txt-lightgreen" : "txt-danger"}`;
-          element.innerHTML = met
-            ? '<span class="font-bold">✓</span>'
-            : '<span class="w-1.5 h-1.5 rounded-full bg-danger"></span>';
-        };
-
-        updateRequirement('[data-password-req="length"]', reqLen);
-        updateRequirement('[data-password-req="upper"]', reqUpper);
-        updateRequirement('[data-password-req="lower"]', reqLower);
-        updateRequirement('[data-password-req="number"]', reqNum);
-        updateRequirement('[data-password-req="special"]', reqSpec);
-
-        const strengthLabel = container.querySelector("[data-password-strength-label]");
-        const strengthCount = [reqLen, reqUpper, reqLower, reqNum, reqSpec].filter(Boolean).length;
-
-        if (strengthLabel) {
-          strengthLabel.textContent =
-            strengthCount === 5 ? "Fuerte" : strengthCount >= 3 ? "Media" : "Débil";
-          
-          strengthLabel.className = `font-label text-[11px] font-bold ${
-            strengthCount === 5 ? "txt-lightgreen" : strengthCount >= 3 ? "txt-label" : "txt-danger"
-          }`;
-        }
-
-        const submitBtn = container.querySelector('[data-hook="login-form"] button[type="submit"]');
-
-        if (submitBtn) {
-          const isLocked = AppState.lockoutUntil !== null && Date.now() < AppState.lockoutUntil;
-
-          submitBtn.disabled = !(
-            s.email.length > 0 &&
-            s.isEmailValid &&
-            password.length >= 8 &&
-            s.captchaChecked &&
-            !isLocked
-          );
-        }
+        this.update();
+        
       });
     }
 
     // --------------------------------------------------------
     // Mostrar / ocultar contraseña
     // --------------------------------------------------------
-    const togglePwBtn = container.querySelector('[data-hook="login-toggle-password"]');
+        const togglePwBtn = container.querySelector('[data-hook="login-toggle-password"]');
 
-    if (togglePwBtn) {
-      togglePwBtn.addEventListener("click", () => {
-        s.showPassword = !s.showPassword;
-        this.update();
-      });
-    }
+        if (togglePwBtn && passwordInput) {
+            togglePwBtn.addEventListener("click", () => {
+                s.showPassword = !s.showPassword;
+
+                passwordInput.type = s.showPassword ? "text" : "password";
+
+                const icon = togglePwBtn.querySelector(".material-symbols-outlined");
+
+                if (icon) {
+                    icon.textContent = s.showPassword
+                            ? "visibility_off"
+                            : "visibility";
+                }
+            });
+        }
 
     // --------------------------------------------------------
     // Recuperar contraseña

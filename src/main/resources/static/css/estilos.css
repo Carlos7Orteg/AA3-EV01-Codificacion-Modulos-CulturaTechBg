@@ -1928,3 +1928,54 @@ h1, h2, h3, h4, h5, h6 {
         flex: 1 1 100%;
     }
 }
+
+/* Ventana modal de seguridad del panel administrativo. */
+.admin-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.55);
+}
+
+/* Oculta completamente el modal cuando tiene el atributo hidden. */
+.admin-modal[hidden] {
+    display: none;
+}
+
+/* Contenedor principal de la ventana emergente. */
+.admin-modal-content {
+    width: 100%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+}
+
+/* Encabezado de la ventana de seguridad. */
+.admin-modal-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+/* Botón para cerrar el modal. */
+.admin-modal-close {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    padding: 4px;
+}
+
+/* Mensaje informativo de seguridad. */
+.admin-modal-message {
+    margin: 16px 0;
+    line-height: 1.5;
+}

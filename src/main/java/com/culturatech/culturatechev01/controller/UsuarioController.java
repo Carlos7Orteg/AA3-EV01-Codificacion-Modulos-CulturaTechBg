@@ -16,6 +16,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import com.culturatech.culturatechev01.model.Rol;
+import com.culturatech.culturatechev01.util.PasswordUtil;
+import jakarta.servlet.http.HttpSession;
+import java.util.Map;
+import org.springframework.http.ResponseEntity;
 
 /**
  * Controlador REST para gestionar los usuarios del sistema.
@@ -70,30 +75,228 @@ public class UsuarioController {
     }
 
     /**
-     * Actualiza los datos de un usuario existente.
+     * Actualiza los datos de un usuario existente y aplica las validaciones de
+     * seguridad según el usuario que realiza la operación.
      *
-     * @param id identificador del usuario.
-     * @param usuario datos actualizados.
-     * @return usuario actualizado.
+     * @param id identificador del usuario que se desea actualizar.
+     * @param solicitud datos del usuario y credenciales de seguridad.
+     * @param session sesión del usuario autenticado.
+     * @return respuesta con el resultado de la actualización.
      */
     @PutMapping("/{id}")
-    public Usuario actualizar(
+    public ResponseEntity<?> actualizar(
             @PathVariable Integer id,
-            @RequestBody Usuario usuario) {
+            @RequestBody UsuarioActualizacionRequest solicitud,
+            HttpSession session) {
 
-        // Asigna el identificador recibido en la URL al objeto actualizado.
-        usuario.setIdUsuario(id);
+        // Obtiene de la sesión el identificador del usuario que realiza la acción.
+        Integer administradorId = (Integer) session.getAttribute("usuarioId");
 
-        return usuarioRepository.save(usuario);
+        // Verifica que exista una sesión autenticada.
+        if (administradorId == null) {
+            return ResponseEntity.status(401)
+                    .body(Map.of(
+                            "ok", false,
+                            "mensaje", "Sesión no válida."
+                    ));
+        }
+
+        // Consulta el usuario que realiza la operación.
+        Usuario administrador = usuarioRepository.findById(administradorId)
+                .orElse(null);
+
+        // Verifica que el usuario autenticado tenga rol ADMIN.
+        if (administrador == null || administrador.getRol() != Rol.ADMIN) {
+            return ResponseEntity.status(403)
+                    .body(Map.of(
+                            "ok", false,
+                            "mensaje", "No tiene permisos para realizar esta operación."
+                    ));
+        }
+
+        // Consulta el usuario que será modificado.
+        Usuario existente = usuarioRepository.findById(id)
+                .orElse(null);
+
+        if (existente == null) {
+            return ResponseEntity.status(404)
+                    .body(Map.of(
+                            "ok", false,
+                            "mensaje", "Usuario no encontrado."
+                    ));
+        }
+
+        // Determina si el administrador está modificando su propio usuario.
+        boolean esPropioUsuario = administradorId.equals(id);
+
+        /*
+     * Cuando un ADMIN modifica a otro ADMIN se solicita la contraseña
+     * del administrador que está realizando la operación.
+         */
+        if (!esPropioUsuario && existente.getRol() == Rol.ADMIN) {
+
+            if (solicitud.getContrasenaSeguridad() == null
+                    || solicitud.getContrasenaSeguridad().isBlank()) {
+                return ResponseEntity.badRequest()
+                        .body(Map.of(
+                                "ok", false,
+                                "mensaje", "Debe proporcionar la contraseña de seguridad."
+                        ));
+            }
+
+            // Verifica la contraseña actual del administrador que realiza la acción.
+            if (!PasswordUtil.verificar(
+                    solicitud.getContrasenaSeguridad(),
+                    administrador.getContrasena())) {
+
+                return ResponseEntity.status(403)
+                        .body(Map.of(
+                                "ok", false,
+                                "mensaje", "La contraseña de seguridad es incorrecta."
+                        ));
+            }
+        }
+
+        /*
+     * Si el administrador está modificando su propia contraseña,
+     * se exige contraseña actual, nueva contraseña y confirmación.
+         */
+        if (esPropioUsuario) {
+
+            boolean solicitaCambioContrasena
+                    = (solicitud.getContrasenaActual() != null
+                    && !solicitud.getContrasenaActual().isBlank())
+                    || (solicitud.getNuevaContrasena() != null
+                    && !solicitud.getNuevaContrasena().isBlank())
+                    || (solicitud.getConfirmarContrasena() != null
+                    && !solicitud.getConfirmarContrasena().isBlank());
+
+            if (solicitaCambioContrasena) {
+
+                if (solicitud.getContrasenaActual() == null
+                        || solicitud.getContrasenaActual().isBlank()
+                        || solicitud.getNuevaContrasena() == null
+                        || solicitud.getNuevaContrasena().isBlank()
+                        || solicitud.getConfirmarContrasena() == null
+                        || solicitud.getConfirmarContrasena().isBlank()) {
+
+                    return ResponseEntity.badRequest()
+                            .body(Map.of(
+                                    "ok", false,
+                                    "mensaje", "Debe proporcionar la contraseña actual, la nueva contraseña y su confirmación."
+                            ));
+                }
+
+                // Verifica la contraseña actual del administrador.
+                if (!PasswordUtil.verificar(
+                        solicitud.getContrasenaActual(),
+                        existente.getContrasena())) {
+
+                    return ResponseEntity.status(403)
+                            .body(Map.of(
+                                    "ok", false,
+                                    "mensaje", "La contraseña actual es incorrecta."
+                            ));
+                }
+
+                // Verifica que la nueva contraseña y su confirmación coincidan.
+                if (!solicitud.getNuevaContrasena()
+                        .equals(solicitud.getConfirmarContrasena())) {
+
+                    return ResponseEntity.badRequest()
+                            .body(Map.of(
+                                    "ok", false,
+                                    "mensaje", "La nueva contraseña y su confirmación no coinciden."
+                            ));
+                }
+
+                // Genera el nuevo hash antes de almacenarlo.
+                existente.setContrasena(
+                        PasswordUtil.generarHash(
+                                solicitud.getNuevaContrasena()
+                        )
+                );
+            }
+        }
+
+        // Actualiza los datos generales del usuario.
+        existente.setNombres(solicitud.getUsuario().getNombres());
+        existente.setApellidos(solicitud.getUsuario().getApellidos());
+        existente.setDocumento(solicitud.getUsuario().getDocumento());
+        existente.setFechaNacimiento(
+                solicitud.getUsuario().getFechaNacimiento()
+        );
+        existente.setCorreo(solicitud.getUsuario().getCorreo());
+        existente.setRol(solicitud.getUsuario().getRol());
+
+        /*
+     * Para otro usuario, una contraseña nueva solo se actualiza
+     * cuando el formulario la proporciona.
+         */
+        if (!esPropioUsuario
+                && solicitud.getUsuario().getContrasena() != null
+                && !solicitud.getUsuario().getContrasena().isBlank()) {
+
+            existente.setContrasena(
+                    PasswordUtil.generarHash(
+                            solicitud.getUsuario().getContrasena()
+                    )
+            );
+        }
+
+        return ResponseEntity.ok(usuarioRepository.save(existente));
     }
-
+    
     /**
-     * Elimina un usuario mediante su identificador.
-     *
-     * @param id identificador del usuario.
+     * Estructura utilizada para recibir los datos del usuario junto con las
+     * credenciales necesarias para las operaciones de seguridad.
      */
-    @DeleteMapping("/{id}")
-    public void eliminar(@PathVariable Integer id) {
-        usuarioRepository.deleteById(id);
+    public static class UsuarioActualizacionRequest {
+
+        private Usuario usuario;
+        private String contrasenaSeguridad;
+        private String contrasenaActual;
+        private String nuevaContrasena;
+        private String confirmarContrasena;
+
+        public Usuario getUsuario() {
+            return usuario;
+        }
+
+        public void setUsuario(Usuario usuario) {
+            this.usuario = usuario;
+        }
+
+        public String getContrasenaSeguridad() {
+            return contrasenaSeguridad;
+        }
+
+        public void setContrasenaSeguridad(String contrasenaSeguridad) {
+            this.contrasenaSeguridad = contrasenaSeguridad;
+        }
+
+        public String getContrasenaActual() {
+            return contrasenaActual;
+        }
+
+        public void setContrasenaActual(String contrasenaActual) {
+            this.contrasenaActual = contrasenaActual;
+        }
+
+        public String getNuevaContrasena() {
+            return nuevaContrasena;
+        }
+
+        public void setNuevaContrasena(String nuevaContrasena) {
+            this.nuevaContrasena = nuevaContrasena;
+        }
+
+        public String getConfirmarContrasena() {
+            return confirmarContrasena;
+        }
+
+        public void setConfirmarContrasena(String confirmarContrasena) {
+            this.confirmarContrasena = confirmarContrasena;
+        }
     }
 }
