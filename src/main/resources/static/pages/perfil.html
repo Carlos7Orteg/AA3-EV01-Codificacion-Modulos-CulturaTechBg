@@ -31,7 +31,7 @@
                 </div>
                 
                 <!-- Formulario para consultar y actualizar la información personal del usuario. -->
-                <form action="" method="post" class="perfil-form">
+                <form id="perfil-form" action="" method="post" class="perfil-form" novalidate>
                     <input type="hidden" name="accion" value="actualizar">
                     <!-- Sección con los datos personales asociados a la cuenta. -->
                     <div class="perfil-section">
@@ -105,7 +105,10 @@
                     </div>
                     <!-- Acciones disponibles para guardar los cambios realizados en el perfil. -->
                     <div class="perfil-actions">
-                        <button type="submit" class="perfil-btn perfil-btn-primary">
+                        <!-- Envía el formulario para iniciar el proceso controlado por JavaScript. -->
+                        <button
+                            type="submit"
+                            class="perfil-btn perfil-btn-primary">
                             <span class="material-symbols-outlined">save</span>
                             Guardar cambios
                         </button>
@@ -139,6 +142,105 @@
                 </section>
             </section>
         </main>
+    </div>
+    
+    <!-- Ventana de seguridad para confirmar el cambio de contraseña. -->
+    <div id="usuario-seguridad-modal"
+         class="admin-modal"
+         hidden>
+
+        <div class="admin-modal-content">
+
+            <div class="admin-modal-header">
+                <div>
+                    <span class="admin-eyebrow">SEGURIDAD</span>
+
+                    <h2 id="usuario-seguridad-titulo">
+                        Cambio de contraseña
+                    </h2>
+                </div>
+
+                <!-- Botón para cerrar el modal sin realizar el cambio. -->
+                <button type="button"
+                        id="usuario-seguridad-cerrar"
+                        class="admin-modal-close"
+                        aria-label="Cerrar">
+                    <span class="material-symbols-outlined">
+                        close
+                    </span>
+                </button>
+            </div>
+
+            <!-- Mensaje utilizado para informar instrucciones o errores. -->
+            <div id="usuario-seguridad-mensaje"
+                 class="admin-modal-message">
+                Ingrese su contraseña actual y confirme la nueva contraseña.
+            </div>
+
+            <!-- Formulario utilizado para confirmar el cambio de contraseña. -->
+            <form id="usuario-seguridad-form"
+                  class="admin-form-grid">
+
+                <div id="campos-cambio-contrasena">
+
+                    <div class="admin-field admin-field-full">
+
+                        <label for="usuario-contrasena-actual">
+                            Contraseña actual
+                        </label>
+
+                        <input id="usuario-contrasena-actual"
+                               type="password"
+                               autocomplete="current-password">
+                    </div>
+
+                    <div class="admin-field admin-field-full">
+
+                        <label for="usuario-nueva-contrasena">
+                            Nueva contraseña
+                        </label>
+
+                        <input id="usuario-nueva-contrasena"
+                               type="password"
+                               minlength="8"
+                               autocomplete="new-password">
+                    </div>
+
+                    <div class="admin-field admin-field-full">
+
+                        <label for="usuario-confirmar-contrasena">
+                            Confirmar nueva contraseña
+                        </label>
+
+                        <input id="usuario-confirmar-contrasena"
+                               type="password"
+                               minlength="8"
+                               autocomplete="new-password">
+                    </div>
+
+                </div>
+
+                <div class="admin-form-actions">
+
+                    <!-- Cancela el cambio de contraseña. -->
+                    <button type="button"
+                            id="usuario-seguridad-cancelar"
+                            class="admin-btn admin-btn-secondary">
+                        Cancelar
+                    </button>
+
+                    <!-- Confirma el cambio de contraseña. -->
+                    <button type="submit"
+                            class="admin-btn admin-btn-primary">
+                        Confirmar
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
     </div>
     
     <script src="/js/perfil.js"></script>
