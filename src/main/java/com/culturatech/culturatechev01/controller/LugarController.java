@@ -148,4 +148,27 @@ public class LugarController {
 
         return ResponseEntity.ok(lugarRepository.save(lugar));
     }
+    
+     /**
+     * Elimina un lugar existente mediante su identificador.
+     *
+     * @param id identificador del lugar que se desea eliminar.
+     * @return respuesta de la operación de eliminación.
+     */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> eliminar(@PathVariable Integer id) {
+
+        // Verifica que el lugar exista antes de intentar eliminarlo.
+        if (!lugarRepository.existsById(id)) {
+            return ResponseEntity.notFound().build();
+        }
+
+        // Elimina el lugar utilizando su identificador.
+        lugarRepository.deleteById(id);
+
+        // Confirma que la eliminación se realizó correctamente.
+        return ResponseEntity.ok(
+                "Lugar eliminado correctamente."
+        );
+    }
 }
