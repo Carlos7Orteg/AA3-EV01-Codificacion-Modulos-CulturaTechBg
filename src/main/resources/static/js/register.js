@@ -171,7 +171,7 @@ const RegisterPage = {
                     </div>
 
                     ${
-                      !allReqsMet && s.password.length > 0
+                      s.password.length > 0
                         ? `<div class="flex flex-col gap-1.5 p-3 bg-[#f3f4f0] rounded-xl border border-[#c4c6cc]/30 mt-1">
                             <div class="flex items-center justify-between font-label text-xs">
                               <span class="font-bold text-[#1a1c1a]">Requisitos de contraseña</span>
@@ -266,9 +266,11 @@ const RegisterPage = {
     container.querySelectorAll('[data-hook="register-noop-link"]').forEach(a => a.addEventListener('click', e => e.preventDefault()));
     // Configura el envío y la validación final del formulario de registro.
     const form = container.querySelector('[data-hook="register-form"]');
+
     if (form) {
-      form.addEventListener('submit', e => {
+      form.addEventListener('submit', async e => {
         e.preventDefault();
+
         // Revalida los datos antes de permitir el envío del formulario.
         const isEmailValid = this.validateEmailFormat(s.email);
         const reqLen = s.password.length >= 8;
@@ -276,8 +278,18 @@ const RegisterPage = {
         const reqLower = /[a-z]/.test(s.password);
         const reqNum = /[0-9]/.test(s.password);
         const reqSpec = /[@#$!()?&%]/.test(s.password);
-        const allReqsMet = [reqLen, reqUpper, reqLower, reqNum, reqSpec].every(Boolean);
-        const passwordsMatch = s.password === s.confirmPassword && s.confirmPassword.length > 0;
+
+        const allReqsMet = [
+          reqLen,
+          reqUpper,
+          reqLower,
+          reqNum,
+          reqSpec
+        ].every(Boolean);
+
+        const passwordsMatch =
+          s.password === s.confirmPassword &&
+          s.confirmPassword.length > 0;
 
         const isFormValid =
           s.name.trim().length > 0 &&
@@ -289,8 +301,61 @@ const RegisterPage = {
           passwordsMatch &&
           s.acceptedTerms;
 
-        if (!isFormValid) return;
+        // Detiene el envío si alguna validación no se cumple.
+        if (!isFormValid) {
+          return;
+        }
 
+        try {
+          // Construye los datos del usuario que serán enviados al backend.
+            const usuario = {
+                nombres: s.name.trim(),
+                apellidos: s.lastname.trim(),
+                documento: s.cedula.trim(),
+                fechaNacimiento: s.birthdate,
+                correo: s.email.trim(),
+                contrasena: s.password,
+                rol: 'USER'
+            };
+
+          // Envía el registro al endpoint de usuarios.
+          const response = await fetch('/api/usuarios', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(usuario)
+          });
+
+          // Obtiene la respuesta del servidor.
+          const resultado = await response.json();
+
+          // Detiene el proceso si el backend rechaza el registro.
+          if (!response.ok) {
+            throw new Error(
+              resultado.mensaje || 'No fue posible registrar el usuario.'
+            );
+          }
+
+          // Informa que el registro fue realizado correctamente.
+          alert(
+            resultado.mensaje ||
+            'Usuario registrado correctamente.'
+          );
+
+          // Limpia el formulario después de un registro exitoso.
+          form.reset();
+
+        } catch (error) {
+
+          // Muestra el error producido durante el registro.
+          console.error('Error al registrar usuario:', error);
+
+          alert(
+            error.message ||
+            'No fue posible completar el registro.'
+          );
+        }
       });
     }
   },

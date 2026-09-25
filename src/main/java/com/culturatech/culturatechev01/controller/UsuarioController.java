@@ -299,4 +299,27 @@ public class UsuarioController {
             this.confirmarContrasena = confirmarContrasena;
         }
     }
+    
+     /**
+     * Elimina un usuario existente mediante su identificador.
+     *
+     * @param id identificador del usuario que se desea eliminar.
+     * @return respuesta de la operación de eliminación.
+     */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> eliminar(@PathVariable Integer id) {
+
+        // Verifica que el usuario exista antes de intentar eliminarlo.
+        if (!usuarioRepository.existsById(id)) {
+            return ResponseEntity.notFound().build();
+        }
+
+        // Elimina el usuario utilizando su identificador.
+        usuarioRepository.deleteById(id);
+
+        // Confirma que la eliminación se realizó correctamente.
+        return ResponseEntity.ok(
+                "Usuario eliminado correctamente."
+        );
+    }
 }

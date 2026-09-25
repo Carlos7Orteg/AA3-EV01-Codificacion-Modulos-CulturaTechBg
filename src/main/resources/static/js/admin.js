@@ -490,20 +490,24 @@ async function guardarUsuario(event) {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-                usuario: {
-                    idUsuario: id,
-                    nombres: usuario.nombres,
-                    apellidos: usuario.apellidos,
-                    documento: usuario.documento,
-                    fechaNacimiento: usuario.fechaNacimiento,
-                    correo: usuario.correo,
-                    contrasena: usuario.contrasena,
-                    rol: usuario.rol
-                },
+            body: JSON.stringify(
+                    id
+                    ? {
+                        usuario: {
+                            idUsuario: id,
+                            nombres: usuario.nombres,
+                            apellidos: usuario.apellidos,
+                            documento: usuario.documento,
+                            fechaNacimiento: usuario.fechaNacimiento,
+                            correo: usuario.correo,
+                            contrasena: usuario.contrasena,
+                            rol: usuario.rol
+                        },
 
-                ...seguridad
-            })
+                        ...seguridad
+                    }
+            : usuario
+                    )
         });
 
         // Comprueba el resultado de la operación.
@@ -586,7 +590,6 @@ async function editarUsuario(id) {
         mostrarAlerta(error.message, 'error');
     }
 }
-
 
 // Elimina un usuario después de solicitar confirmación.
 async function eliminarUsuario(id) {
