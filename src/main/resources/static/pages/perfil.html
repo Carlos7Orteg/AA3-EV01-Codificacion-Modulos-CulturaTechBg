@@ -131,7 +131,7 @@
                             <p>Elimina tu cuenta y los registros personales relacionados. Esta acción no se puede deshacer.</p>
                         </div>
                         <!-- Formulario para solicitar la eliminación definitiva de la cuenta. -->
-                        <form action="" method="post" onsubmit="return confirm('¿Deseas eliminar definitivamente tu cuenta?');">
+                        <form action="/api/auth/perfil/eliminar" method="post" onsubmit="return confirm('¿Deseas eliminar definitivamente tu cuenta?');">
                             <input type="hidden" name="accion" value="eliminar">
                             <button type="submit" class="perfil-btn perfil-btn-danger">
                                 <span class="material-symbols-outlined">delete</span>

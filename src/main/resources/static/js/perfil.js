@@ -38,11 +38,114 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Obtiene la nueva contraseña ingresada en el perfil.
         const nuevaContrasena =
             document.getElementById('contrasena').value.trim();
+    
+        // Obtiene los campos generales del perfil.
+        const nombres =
+                document.getElementById('nombres');
 
-        // Si no se ingresó una contraseña, conserva el comportamiento
-        // normal del formulario para los demás datos del perfil.
+        const apellidos =
+                document.getElementById('apellidos');
+
+        const documento =
+                document.getElementById('documento');
+
+        const fechaNacimiento =
+                document.getElementById('fechaNacimiento');
+
+        const correo =
+                document.getElementById('correo');
+
+        // Limpia los mensajes de validación anteriores.
+        [nombres, apellidos, documento, fechaNacimiento, correo]
+                .forEach(campo => campo.setCustomValidity(''));
+
+        // Valida que los campos generales estén diligenciados.
+        if (!nombres.value.trim()) {
+            nombres.setCustomValidity('Debe ingresar los nombres.');
+            nombres.reportValidity();
+            nombres.focus();
+            return;
+        }
+
+        if (!apellidos.value.trim()) {
+            apellidos.setCustomValidity('Debe ingresar los apellidos.');
+            apellidos.reportValidity();
+            apellidos.focus();
+            return;
+        }
+
+        if (!documento.value.trim()) {
+            documento.setCustomValidity('Debe ingresar el documento.');
+            documento.reportValidity();
+            documento.focus();
+            return;
+        }
+
+        if (!fechaNacimiento.value) {
+            fechaNacimiento.setCustomValidity(
+                    'Debe ingresar la fecha de nacimiento.'
+                    );
+            fechaNacimiento.reportValidity();
+            fechaNacimiento.focus();
+            return;
+        }
+
+        // Valida el formato básico del correo electrónico.
+        const formatoCorreo =
+                /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!correo.value.trim()) {
+            correo.setCustomValidity(
+                    'Debe ingresar el correo electrónico.'
+                    );
+            correo.reportValidity();
+            correo.focus();
+            return;
+        }
+
+        if (!formatoCorreo.test(correo.value.trim())) {
+            correo.setCustomValidity(
+                    'Ingrese un correo electrónico válido, por ejemplo: usuario@correo.com.'
+                    );
+            correo.reportValidity();
+            correo.focus();
+            return;
+        }
+
+        // Si no se cambia la contraseña, actualiza únicamente los datos personales.
         if (!nuevaContrasena) {
-            formulario.submit();
+
+            // Construye los datos del perfil.
+            const datosPerfil = {
+                nombres: document.getElementById('nombres').value.trim(),
+                apellidos: document.getElementById('apellidos').value.trim(),
+                documento: document.getElementById('documento').value.trim(),
+                fechaNacimiento: document.getElementById('fechaNacimiento').value,
+                correo: document.getElementById('correo').value.trim()
+            };
+
+            // Envía la actualización al backend.
+            const respuesta = await fetch('/api/auth/perfil/datos', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(datosPerfil)
+            });
+
+            // Obtiene la respuesta del servidor.
+            const resultado = await respuesta.json();
+
+            if (!respuesta.ok) {
+                alert(
+                        resultado.mensaje
+                        || 'No fue posible actualizar los datos del perfil.'
+                        );
+                return;
+            }
+
+            // Informa que la actualización fue correcta.
+            alert(resultado.mensaje);
             return;
         }
 

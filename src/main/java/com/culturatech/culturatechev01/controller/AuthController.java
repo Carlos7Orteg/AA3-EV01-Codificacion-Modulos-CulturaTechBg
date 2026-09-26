@@ -72,8 +72,12 @@ public class AuthController {
         return ResponseEntity.ok(usuario);
     }
     
-     /**
+    /**
      * Actualiza la contraseña del usuario autenticado desde su perfil.
+     *
+     * @param datos datos de contraseña enviados desde el formulario.
+     * @param session sesión del usuario autenticado.
+     * @return resultado de la actualización.
      */
     @PutMapping("/perfil")
     public ResponseEntity<?> actualizarPerfil(
@@ -81,18 +85,29 @@ public class AuthController {
             HttpSession session) {
 
         // Obtiene el identificador del usuario autenticado.
-        Integer usuarioId = (Integer) session.getAttribute("usuarioId");
+        Integer usuarioId
+                = (Integer) session.getAttribute("usuarioId");
 
+        // Verifica que exista una sesión autenticada.
         if (usuarioId == null) {
             return ResponseEntity.status(401)
-                    .body(Map.of("ok", false, "mensaje", "Sesión no autenticada."));
+                    .body(Map.of(
+                            "ok", false,
+                            "mensaje", "Sesión no autenticada."
+                    ));
         }
 
-        String contrasenaActual = datos.get("contrasenaActual");
-        String nuevaContrasena = datos.get("nuevaContrasena");
-        String confirmarContrasena = datos.get("confirmarContrasena");
+        // Obtiene las contraseñas enviadas desde el modal.
+        String contrasenaActual
+                = datos.get("contrasenaActual");
 
-        // Verifica que se hayan enviado las credenciales necesarias.
+        String nuevaContrasena
+                = datos.get("nuevaContrasena");
+
+        String confirmarContrasena
+                = datos.get("confirmarContrasena");
+
+        // Verifica que los tres campos sean obligatorios.
         if (contrasenaActual == null
                 || nuevaContrasena == null
                 || confirmarContrasena == null
@@ -103,18 +118,22 @@ public class AuthController {
             return ResponseEntity.badRequest()
                     .body(Map.of(
                             "ok", false,
-                            "mensaje", "Todos los campos de contraseña son obligatorios."
+                            "mensaje",
+                            "Todos los campos de contraseña son obligatorios."
                     ));
         }
 
-        // Consulta el usuario autenticado.
-        Usuario usuario = usuarioRepository.findById(usuarioId).orElse(null);
+        // Busca el usuario autenticado en la base de datos.
+        Usuario usuario
+                = usuarioRepository.findById(usuarioId)
+                        .orElse(null);
 
+        // Verifica que el usuario exista.
         if (usuario == null) {
             return ResponseEntity.notFound().build();
         }
 
-        // Comprueba la contraseña actual.
+        // Comprueba que la contraseña actual sea correcta.
         if (!PasswordUtil.verificar(
                 contrasenaActual,
                 usuario.getContrasena())) {
@@ -122,31 +141,134 @@ public class AuthController {
             return ResponseEntity.status(400)
                     .body(Map.of(
                             "ok", false,
-                            "mensaje", "La contraseña actual es incorrecta."
+                            "mensaje",
+                            "La contraseña actual es incorrecta."
                     ));
         }
 
-        // Verifica que la nueva contraseña y su confirmación coincidan.
+        // Comprueba que la nueva contraseña y su confirmación coincidan.
         if (!nuevaContrasena.equals(confirmarContrasena)) {
+
             return ResponseEntity.badRequest()
                     .body(Map.of(
                             "ok", false,
-                            "mensaje", "La nueva contraseña y su confirmación no coinciden."
+                            "mensaje",
+                            "La nueva contraseña y su confirmación no coinciden."
                     ));
         }
 
-        // Genera y almacena el nuevo hash de contraseña.
+        // Genera el hash de la nueva contraseña.
         usuario.setContrasena(
                 PasswordUtil.generarHash(nuevaContrasena)
         );
 
+        // Guarda la nueva contraseña en la base de datos.
         usuarioRepository.save(usuario);
 
+        // Confirma que la actualización fue exitosa.
         return ResponseEntity.ok(
                 Map.of(
                         "ok", true,
-                        "mensaje", "La contraseña fue actualizada correctamente."
+                        "mensaje",
+                        "La contraseña fue actualizada correctamente."
                 )
         );
+    }
+    
+    /**
+     * Actualiza los datos personales del usuario autenticado.
+     *
+     * @param datos datos personales enviados desde el formulario.
+     * @param session sesión del usuario autenticado.
+     * @return resultado de la actualización.
+     */
+    @PutMapping("/perfil/datos")
+    public ResponseEntity<?> actualizarDatosPerfil(
+            @RequestBody Map<String, String> datos,
+            HttpSession session) {
+
+        // Obtiene el identificador del usuario autenticado.
+        Integer usuarioId
+                = (Integer) session.getAttribute("usuarioId");
+
+        // Verifica que exista una sesión autenticada.
+        if (usuarioId == null) {
+            return ResponseEntity.status(401)
+                    .body(Map.of(
+                            "ok", false,
+                            "mensaje", "Sesión no válida."
+                    ));
+        }
+
+        // Busca el usuario en la base de datos.
+        Usuario usuario = usuarioRepository.findById(usuarioId)
+                .orElse(null);
+
+        // Verifica que el usuario exista.
+        if (usuario == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        // Actualiza los datos personales recibidos.
+        usuario.setNombres(datos.get("nombres"));
+        usuario.setApellidos(datos.get("apellidos"));
+        usuario.setDocumento(datos.get("documento"));
+        usuario.setFechaNacimiento(
+                datos.get("fechaNacimiento") == null
+                || datos.get("fechaNacimiento").isBlank()
+                ? null
+                : java.time.LocalDate.parse(
+                        datos.get("fechaNacimiento")
+                )
+        );
+        usuario.setCorreo(datos.get("correo"));
+
+        // Guarda los cambios en la base de datos.
+        usuarioRepository.save(usuario);
+
+        // Confirma que la actualización fue correcta.
+        return ResponseEntity.ok(
+                Map.of(
+                        "ok", true,
+                        "mensaje",
+                        "Datos del perfil actualizados correctamente."
+                )
+        );
+    }
+    
+    /**
+     * Elimina la cuenta del usuario autenticado.
+     *
+     * @param session sesión del usuario autenticado.
+     * @return redirección hacia la página de inicio de sesión.
+     */
+    @PostMapping("/perfil/eliminar")
+    public ResponseEntity<Void> eliminarCuenta(
+            HttpSession session) {
+
+        // Obtiene el identificador del usuario autenticado.
+        Integer usuarioId
+                = (Integer) session.getAttribute("usuarioId");
+
+        // Verifica que exista una sesión válida.
+        if (usuarioId == null) {
+            return ResponseEntity.status(401).build();
+        }
+
+        // Verifica que el usuario exista.
+        if (!usuarioRepository.existsById(usuarioId)) {
+            return ResponseEntity.notFound().build();
+        }
+
+        // Elimina el usuario de la base de datos.
+        usuarioRepository.deleteById(usuarioId);
+
+        // Cierra la sesión después de eliminar la cuenta.
+        session.invalidate();
+
+        // Redirige al usuario hacia el inicio de sesión.
+        return ResponseEntity.status(302)
+                .header("Location", "/pages/login.html")
+                .build();
     }
 }

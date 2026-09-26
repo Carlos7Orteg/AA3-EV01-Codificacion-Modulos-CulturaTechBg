@@ -59,18 +59,32 @@ public class UsuarioController {
      * @return usuario encontrado.
      */
     @GetMapping("/{id}")
-    public Usuario buscar(@PathVariable Integer id) {
-        return usuarioRepository.findById(id).orElse(null);
-    }
+    public ResponseEntity<Usuario> obtenerPorId(
+            @PathVariable Integer id) {
 
+        // Busca el usuario mediante su identificador.
+        return usuarioRepository.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+    
     /**
      * Registra un nuevo usuario.
      *
-     * @param usuario datos del usuario.
-     * @return usuario registrado.
+     * @param usuario usuario que se desea registrar.
+     * @return usuario registrado con la contraseña protegida.
      */
     @PostMapping
     public Usuario crear(@RequestBody Usuario usuario) {
+
+        // Genera el hash de la contraseña antes de almacenarla en la base de datos.
+        usuario.setContrasena(
+                PasswordUtil.generarHash(
+                        usuario.getContrasena()
+                )
+        );
+
+        // Guarda el usuario con la contraseña protegida.
         return usuarioRepository.save(usuario);
     }
 
